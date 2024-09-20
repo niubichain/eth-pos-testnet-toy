@@ -1,13 +1,13 @@
 #!/bin/bash
 
-pkill geth
-sleep 1
+pkill validator
+sleep 2
 
 pkill beacon-chain
-sleep 1
+sleep 2
 
-pkill validator
-sleep 1
+pkill geth
+sleep 2
 
 nohup ./geth --http --http.addr=0.0.0.0 --http.api eth,web3,net,txpool,shh,debug --ws --ws.addr=0.0.0.0 --ws.api eth,web3,net,txpool,shh,debug --authrpc.jwtsecret jwt.hex --datadir gethdata --nodiscover --syncmode full --allow-insecure-unlock --unlock 0x123463a4b065722e99115d6c222f267d9cabb524 --password secret.txt.password >gethdata/log.txt 2>&1 &
 
@@ -17,8 +17,9 @@ nohup ./validator --datadir validatordata --accept-terms-of-use --interop-num-va
 
 sleep 2
 
-tail -n 3 gethdata/log.txt
+tail -n 2 gethdata/log.txt
 echo
-tail -n 3 beacondata/log.txt
+tail -n 2 beacondata/log.txt
 echo
-tail -n 3 validatordata/log.txt
+tail -n 2 validatordata/log.txt
+echo

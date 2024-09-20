@@ -1,13 +1,10 @@
 #!/bin/bash
 
-pkill geth
-sleep 1
-
-pkill beacon-chain
-sleep 1
-
 pkill validator
-sleep 1
+pkill beacon-chain
+pkill geth
+
+sleep 2
 
 rm -rf *data
 
