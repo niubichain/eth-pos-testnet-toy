@@ -1,0 +1,6 @@
+[submodule "go-ethereum"]
+	path = go-ethereum
+	url = https://github.com/niubichain/go-ethereum.git
+[submodule "prysm"]
+	path = prysm
+	url = https://github.com/prysmaticlabs/prysm
