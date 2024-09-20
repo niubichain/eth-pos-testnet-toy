@@ -11,3 +11,9 @@ build: prepare
 
 init:
 	bash -x tools/init.sh
+
+start:
+	bash -x tools/start.sh
+
+stop:
+	bash -x tools/stop.sh
