@@ -4,3 +4,6 @@
 [submodule "prysm"]
 	path = prysm
 	url = https://github.com/prysmaticlabs/prysm
+[submodule "rust-ethereum"]
+	path = rust-ethereum
+	url = https://github.com/paradigmxyz/reth.git

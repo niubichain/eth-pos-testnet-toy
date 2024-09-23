@@ -8,6 +8,7 @@ build: prepare
 	cd prysm && go build -o=../validator ./cmd/validator
 	cd prysm && go build -o=../prysmctl ./cmd/prysmctl
 	cd go-ethereum && make geth && cp ./build/bin/geth ../geth
+	cd rust-ethereum && make build && cp ./target/release/reth ../reth
 
 init:
 	bash -x tools/init.sh
