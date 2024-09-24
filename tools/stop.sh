@@ -6,7 +6,6 @@ sleep 2
 pkill beacon-chain
 sleep 2
 
-pkill geth
 pkill reth
 sleep 2
 

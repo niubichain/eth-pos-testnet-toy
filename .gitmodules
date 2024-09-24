@@ -7,3 +7,6 @@
 [submodule "rust-ethereum"]
 	path = rust-ethereum
 	url = https://github.com/paradigmxyz/reth.git
+[submodule "lighthouse"]
+	path = lighthouse
+	url = https://github.com/sigp/lighthouse.git

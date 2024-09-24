@@ -1,10 +1,16 @@
 *data/
+lighthouse/
+reth/
+prysm/
 
 genesis.ssz
 genesis.ssz.json
 
-beacon-chain
-geth
 reth
+lighthouse
+lh
 prysmctl
+
+beacon-chain
 validator
+geth

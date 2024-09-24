@@ -6,7 +6,6 @@ sleep 2
 pkill beacon-chain
 sleep 2
 
-pkill geth
 pkill reth
 sleep 2
 
@@ -18,7 +17,7 @@ nohup ./validator --datadir validatordata --accept-terms-of-use --interop-num-va
 
 sleep 2
 
-tail -n 2 gethdata/log.txt
+tail -n 2 rethdata/log.txt
 echo
 tail -n 2 beacondata/log.txt
 echo
