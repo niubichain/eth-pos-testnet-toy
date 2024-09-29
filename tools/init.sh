@@ -30,13 +30,13 @@ sleep 2
 mkdir -p $el_data_dir $cl_bn_data_dir $cl_vc_data_dir || exit 1
 cp ../static_files/jwt.hex ${jwt_path} || exit 1
 
-./reth init --datadir=${el_data_dir} --chain=${genesis_json_path} || exit 1
+${bin_dir}/reth init --datadir=${el_data_dir} --chain=${genesis_json_path} || exit 1
 
-nohup ./reth node \
+nohup ${bin_dir}/reth node \
     --datadir=${el_data_dir} \
     --chain=${genesis_json_path} \
+    --log.file.directory=${el_data_dir}/logs \
     --ipcdisable \
-    --bootnodes="" \
     --http --http.addr=0.0.0.0 \
     --http.corsdomain=* --http.api="admin,net,eth,web3,debug,trace,txpool" \
     --ws --ws.addr=0.0.0.0 \
@@ -46,25 +46,23 @@ nohup ./reth node \
     --disable-discovery \
     >${el_data_dir}/reth.log 2>&1 &
 
-nohup ./lighthouse beacon_node \
+nohup ${bin_dir}/lighthouse beacon_node \
     --testnet-dir=${testnet_dir} \
     --datadir=${cl_bn_data_dir} \
     --slots-per-restore-point=32 \
     --enable-private-discovery \
-    --boot-nodes="" \
     --disable-enr-auto-update \
     --enr-udp-port=9000 --enr-tcp-port=9000 \
     --listen-address=0.0.0.0 --port=9000 \
     --http --http-address=0.0.0.0 --http-port=4000 \
-    --http-allow-sync-stalled \
     --execution-endpoints="http://localhost:8551" \
     --jwt-secrets=${jwt_path} \
     --subscribe-all-subnets \
     --suggested-fee-recipient=${fee_recipient} \
     >${cl_bn_data_dir}/bn.log 2>&1 &
 
-nohup ./lighthouse validator_client \
-    --testnet-dir=. \
+nohup ${bin_dir}/lighthouse validator_client \
+    --testnet-dir=${testnet_dir} \
     --datadir=${cl_vc_data_dir}\
     --init-slashing-protection \
     --beacon-nodes="http://localhost:9001" \

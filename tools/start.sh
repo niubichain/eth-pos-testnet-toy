@@ -23,7 +23,7 @@ pkill reth
 pkill geth
 sleep 2
 
-nohup ./reth node \
+nohup ${bin_dir}/reth node \
     --datadir=${el_data_dir} \
     --chain=${genesis_json_path} \
     --ipcdisable \
@@ -37,7 +37,7 @@ nohup ./reth node \
     --disable-discovery \
     >>${el_data_dir}/reth.log 2>&1 &
 
-nohup ./lighthouse beacon_node \
+nohup ${bin_dir}/lighthouse beacon_node \
     --testnet-dir=${testnet_dir} \
     --datadir=${cl_bn_data_dir} \
     --slots-per-restore-point=32 \
@@ -54,7 +54,7 @@ nohup ./lighthouse beacon_node \
     --suggested-fee-recipient=${fee_recipient} \
     >>${cl_bn_data_dir}/bn.log 2>&1 &
 
-nohup ./lighthouse validator_client \
+nohup ${bin_dir}/lighthouse validator_client \
     --testnet-dir=. \
     --datadir=${cl_vc_data_dir}\
     --init-slashing-protection \
