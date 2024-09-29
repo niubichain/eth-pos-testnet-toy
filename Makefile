@@ -4,6 +4,7 @@ prepare:
 	git submodule update --init --recursive
 
 utils: prepare
+	rm -rf testdata
 	mkdir -p testdata/bin
 	cd submodules/lighthouse && make && cp ./target/release/lighthouse ../../testdata/bin/
 	cd submodules/reth && make build && cp ./target/release/reth ../../testdata/bin/
@@ -11,7 +12,8 @@ utils: prepare
 
 genesis: utils
 	cd submodules/egg && make
-	cp -r submodules/egg/data testdata/genesis_data
+	mkdir -p testdata/node
+	cp -r submodules/egg/data testdata/node/genesis_data
 
 restore_validator_keys: genesis
 	bash -x tools/restore_validator_keys.sh
