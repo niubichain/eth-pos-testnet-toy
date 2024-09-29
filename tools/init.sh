@@ -14,7 +14,6 @@ fi
 EXEC_PATH=$(echo ${EXEC_PATH} | sed 's@/\./@/@g' | sed 's@/\.*$@@')
 cd $EXEC_PATH || exit 1
 #################################################
-
 source ./path.env
 
 fee_recipient="0x8943545177806ED17B9F23F0a21ee5948eCaa776"
