@@ -9,10 +9,10 @@
 # will trigger the `sudo` command.
 make prepare
 
-# Create genesis data for the new testnet.
 make genesis
 
-# Create a new testnet node.
+# Create genesis data for the new testnet,
+# and create an initial node instance for it.
 make create_initial_node
 
 # Start the node.

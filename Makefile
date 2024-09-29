@@ -25,3 +25,7 @@ start_initial_node:
 
 stop_initial_node:
 	bash -x tools/stop.sh
+
+archive_node: stop_initial_node
+	sleep 3
+	tar -zcpf initial_node.tar.gz testdata/node
