@@ -11,6 +11,10 @@ utils: prepare
 
 genesis: utils
 	cd submodules/egg && make
+	cp -r submodules/egg/data testdata/genesis_data
+
+restore_validator_keys: genesis
+	bash -x tools/restore_validator_keys.sh
 
 create_initial_node: genesis
 	bash -x tools/init.sh
