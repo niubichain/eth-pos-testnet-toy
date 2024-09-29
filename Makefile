@@ -9,11 +9,14 @@ build: prepare
 	cd submodules/reth && make build && cp ./target/release/reth ../../testdata/bin/
 	cd submodules/go-ethereum && make geth && cp build/bin/geth ../../testdata/bin/
 
-init:
+genesis:
+	cd submodules/egg && make
+
+create_initial_node: genesis
 	bash -x tools/init.sh
 
-start:
+start_initial_node:
 	bash -x tools/start.sh
 
-stop:
+stop_initial_node:
 	bash -x tools/stop.sh
