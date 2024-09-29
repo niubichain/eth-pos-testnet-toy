@@ -24,11 +24,44 @@ pkill reth
 pkill geth
 sleep 2
 
-nohup ./reth node --chain=genesis.json --ipcdisable --http --http.addr=0.0.0.0 --http.corsdomain=* --http.api="admin,net,eth,web3,debug,trace,txpool" --ws --ws.addr=0.0.0.0 --ws.origins=* --ws.api="eth,net" --authrpc.jwtsecret=jwt.hex --datadir=rethdata --disable-discovery >rethdata/log.txt 2>&1 &
+nohup ./reth node \
+    --datadir=${el_data_dir} \
+    --chain=${genesis_json_path} \
+    --ipcdisable \
+    --bootnodes="" \
+    --http --http.addr=0.0.0.0 \
+    --http.corsdomain=* --http.api="admin,net,eth,web3,debug,trace,txpool" \
+    --ws --ws.addr=0.0.0.0 \
+    --ws.origins=* --ws.api="eth,net" \
+    --authrpc.addr=0.0.0.0 --authrpc.port=8551 \
+    --authrpc.jwtsecret=${jwt_path} \
+    --disable-discovery \
+    >>${el_data_dir}/reth.log 2>&1 &
 
-nohup ./beacon-chain --datadir beacondata --min-sync-peers 0 --genesis-state genesis.ssz --bootstrap-node= --interop-eth1data-votes --chain-config-file config.yml --contract-deployment-block 0 --chain-id 9527000 --accept-terms-of-use --jwt-secret jwt.hex --suggested-fee-recipient 0x123463a4B065722E99115D6c222f267d9cABb524 --minimum-peers-per-subnet 0 --enable-debug-rpc-endpoints --execution-endpoint http://localhost:8551 >beacondata/log.txt 2>&1 &
+nohup ./lighthouse beacon_node \
+    --testnet-dir=${testnet_dir} \
+    --datadir=${cl_bn_data_dir} \
+    --slots-per-restore-point=32 \
+    --enable-private-discovery \
+    --boot-nodes="" \
+    --disable-enr-auto-update \
+    --enr-udp-port=9000 --enr-tcp-port=9000 \
+    --listen-address=0.0.0.0 --port=9000 \
+    --http --http-address=0.0.0.0 --http-port=4000 \
+    --http-allow-sync-stalled \
+    --execution-endpoints="http://localhost:8551" \
+    --jwt-secrets=${jwt_path} \
+    --subscribe-all-subnets \
+    --suggested-fee-recipient=${fee_recipient} \
+    >>${cl_bn_data_dir}/bn.log 2>&1 &
 
-nohup ./validator --datadir validatordata --accept-terms-of-use --interop-num-validators 64 --chain-config-file config.yml >validatordata/log.txt 2>&1 &
+nohup ./lighthouse validator_client \
+    --testnet-dir=. \
+    --datadir=${cl_vc_data_dir}\
+    --init-slashing-protection \
+    --beacon-nodes="http://localhost:9001" \
+    --suggested-fee-recipient=${fee_recipient} \
+    >>${cl_vc_data_dir}/vc.log 2>&1 &
 
 sleep 2
 
@@ -37,3 +70,4 @@ echo
 tail -n 3 ${cl_bn_data_dir}/bn.log
 echo
 tail -n 3 ${cl_vc_data_dir}/vc.log
+

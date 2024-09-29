@@ -29,3 +29,6 @@ stop_initial_node:
 archive_node: stop_initial_node
 	sleep 3
 	tar -zcpf initial_node.tar.gz testdata/node
+
+fmt:
+	find tools -type f | xargs sed -i 's/\t/    /g'

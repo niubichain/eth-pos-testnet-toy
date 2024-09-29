@@ -32,7 +32,7 @@ echo "$mnemonics" > $txt_path | exit 1
 
 time ../testdata/bin/lighthouse account validator recover \
     --testnet-dir=${cfg_dir} \
-    --datadir=../testdata/node/cl \
+    --datadir=${cl_vc_data_dir} \
     --mnemonic-path=${txt_path} \
     --count=${validator_cnt} \
     --store-withdrawal-keystore
