@@ -44,7 +44,7 @@ nohup ${bin_dir}/reth node \
     --authrpc.addr=0.0.0.0 --authrpc.port=8551 \
     --authrpc.jwtsecret=${jwt_path} \
     --disable-discovery \
-    >${el_data_dir}/reth.log 2>&1 &
+    >>${el_data_dir}/reth.log 2>&1 &
 
 nohup ${bin_dir}/lighthouse beacon_node \
     --testnet-dir=${testnet_dir} \
@@ -59,7 +59,7 @@ nohup ${bin_dir}/lighthouse beacon_node \
     --jwt-secrets=${jwt_path} \
     --subscribe-all-subnets \
     --suggested-fee-recipient=${fee_recipient} \
-    >${cl_bn_data_dir}/bn.log 2>&1 &
+    >>${cl_bn_data_dir}/bn.log 2>&1 &
 
 nohup ${bin_dir}/lighthouse validator_client \
     --testnet-dir=${testnet_dir} \
@@ -67,7 +67,7 @@ nohup ${bin_dir}/lighthouse validator_client \
     --init-slashing-protection \
     --beacon-nodes="http://localhost:9001" \
     --suggested-fee-recipient=${fee_recipient} \
-    >${cl_vc_data_dir}/vc.log 2>&1 &
+    >>${cl_vc_data_dir}/vc.log 2>&1 &
 
 sleep 2
 
