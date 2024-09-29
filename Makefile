@@ -2,8 +2,9 @@ all: create_initial_node
 
 prepare:
 	git submodule update --init --recursive
+	cd submodules/egg && make prepare
 
-utils: prepare
+utils:
 	rm -rf testdata
 	mkdir -p testdata/bin
 	cd submodules/lighthouse && make && cp ./target/release/lighthouse ../../testdata/bin/
@@ -11,7 +12,7 @@ utils: prepare
 	cd submodules/go-ethereum && make geth && cp build/bin/geth ../../testdata/bin/
 
 genesis: utils
-	cd submodules/egg && make
+	cd submodules/egg && make build
 	mkdir -p testdata/node
 	cp -r submodules/egg/data testdata/node/genesis_data
 
