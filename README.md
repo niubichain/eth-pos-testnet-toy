@@ -1,19 +1,23 @@
 # NBnet-Testnet
 
+> **NOTE: can only run on recent versions of `Ubuntu/Debian/Fedora Linux`.**
+
 ### Generate the initial node
 
 ```shell
-# create necessary utils,
-# compile, pull data, eg..
-make utils
+# Only need to execute one time,
+# will trigger the `sudo` command.
+make prepare
 
-# clean up all old data,
-# and create a new testnet node
+# Create genesis data for the new testnet.
+make genesis
+
+# Create a new testnet node.
 make create_initial_node
 
-# start the node
+# Start the node.
 make start_initial_node
 
-# stop it
+# Stop it.
 make stop_initial_node
 ```

@@ -15,8 +15,6 @@ genesis: utils
 	cd submodules/egg && make build
 	mkdir -p testdata/node
 	cp -r submodules/egg/data testdata/node/genesis_data
-
-restore_validator_keys: genesis
 	bash -x tools/restore_validator_keys.sh
 
 create_initial_node: genesis
