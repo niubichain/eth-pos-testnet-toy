@@ -3,7 +3,7 @@ all: init
 prepare:
 	git submodule update --init --recursive
 
-build: prepare
+utils: prepare
 	mkdir -p testdata/bin
 	cd submodules/lighthouse && make && cp ./target/release/lighthouse ../../testdata/bin/
 	cd submodules/reth && make build && cp ./target/release/reth ../../testdata/bin/

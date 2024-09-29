@@ -3,8 +3,17 @@
 ### Generate the initial node
 
 ```shell
-make build
-make init # clean up old data, and create a new testnet chain
-make start
-make stop
+# create necessary utils,
+# compile, pull data, eg..
+make utils
+
+# clean up all old data,
+# and create a new testnet node
+make create_initial_node
+
+# start the node
+make start_initial_node
+
+# stop it
+make stop_initial_node
 ```
