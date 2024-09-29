@@ -1,12 +1,27 @@
-#!/bin/bash
+#!/bin/bin/env bash
 
-pkill validator
-sleep 2
+#################################################
+#### Ensure we are in the right path. ###########
+#################################################
+if [[ 0 -eq $(echo $0 | grep -c '^/') ]]; then
+    # relative path
+    EXEC_PATH=$(dirname "`pwd`/$0")
+else
+    # absolute path
+    EXEC_PATH=$(dirname "$0")
+fi
 
-pkill beacon-chain
+EXEC_PATH=$(echo ${EXEC_PATH} | sed 's@/\./@/@g' | sed 's@/\.*$@@')
+cd $EXEC_PATH || exit 1
+#################################################
+
+source ./path.env
+
+pkill lighthouse
 sleep 2
 
 pkill reth
+pkill geth
 sleep 2
 
 nohup ./reth node --chain=genesis.json --ipcdisable --http --http.addr=0.0.0.0 --http.corsdomain=* --http.api="admin,net,eth,web3,debug,trace,txpool" --ws --ws.addr=0.0.0.0 --ws.origins=* --ws.api="eth,net" --authrpc.jwtsecret=jwt.hex --datadir=rethdata --disable-discovery >rethdata/log.txt 2>&1 &
@@ -17,9 +32,8 @@ nohup ./validator --datadir validatordata --accept-terms-of-use --interop-num-va
 
 sleep 2
 
-tail -n 2 rethdata/log.txt
+tail -n 3 ${el_data_dir}/reth.log
 echo
-tail -n 2 beacondata/log.txt
+tail -n 3 ${cl_bn_data_dir}/bn.log
 echo
-tail -n 2 validatordata/log.txt
-echo
+tail -n 3 ${cl_vc_data_dir}/vc.log

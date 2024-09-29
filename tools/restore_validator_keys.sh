@@ -15,7 +15,9 @@ EXEC_PATH=$(echo ${EXEC_PATH} | sed 's@/\./@/@g' | sed 's@/\.*$@@')
 cd $EXEC_PATH || exit 1
 #################################################
 
-cfg_dir="../testdata/node/genesis_data/network_configs"
+source ./path.env
+
+cfg_dir=${testnet_dir}
 yaml_path="${cfg_dir}/mnemonics.yaml"
 txt_path="${cfg_dir}/mnemonics.txt"
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bin/env bash
 
 #################################################
 #### Ensure we are in the right path. ###########
@@ -15,21 +15,13 @@ EXEC_PATH=$(echo ${EXEC_PATH} | sed 's@/\./@/@g' | sed 's@/\.*$@@')
 cd $EXEC_PATH || exit 1
 #################################################
 
+source ./path.env
+
 pkill lighthouse
 pkill reth
 pkill geth
 
 sleep 2
-
-node_dir="../testdata/node"
-testnet_dir="${node_dir}/genesis_data/network_configs"
-genesis_json_path="${testnet_dir}/genesis.json"
-
-el_data_dir="${node_dir}/el"
-cl_bn_data_dir="${node_dir}/cl/beacon"
-cl_vc_data_dir="${node_dir}/cl/validator"
-
-jwt_path="${node_dir}/jwt.hex"
 
 mkdir -p $el_data_dir $cl_bn_data_dir $cl_vc_data_dir || exit 1
 cp ../static_files/jwt.hex ${jwt_path} || exit 1
