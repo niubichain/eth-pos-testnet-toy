@@ -25,7 +25,7 @@ sleep 2
 
 tail -n 3 ${el_data_dir}/reth.log
 echo
-tail -n 3 ${cl_bn_data_dir}/bn.log
+tail -n 3 ${cl_bn_data_dir}/lighthouse.bn.log
 echo
-tail -n 3 ${cl_vc_data_dir}/vc.log
+tail -n 3 ${cl_vc_data_dir}/lighthouse.vc.log
 

@@ -59,7 +59,7 @@ nohup ${bin_dir}/lighthouse beacon_node \
     --jwt-secrets=${jwt_path} \
     --subscribe-all-subnets \
     --suggested-fee-recipient=${fee_recipient} \
-    >>${cl_bn_data_dir}/bn.log 2>&1 &
+    >>${cl_bn_data_dir}/lighthouse.bn.log 2>&1 &
 
 nohup ${bin_dir}/lighthouse validator_client \
     --testnet-dir=${testnet_dir} \
@@ -67,13 +67,13 @@ nohup ${bin_dir}/lighthouse validator_client \
     --init-slashing-protection \
     --beacon-nodes="http://localhost:9001" \
     --suggested-fee-recipient=${fee_recipient} \
-    >>${cl_vc_data_dir}/vc.log 2>&1 &
+    >>${cl_vc_data_dir}/lighthouse.vc.log 2>&1 &
 
 sleep 2
 
 tail -n 3 ${el_data_dir}/reth.log
 echo
-tail -n 3 ${cl_bn_data_dir}/bn.log
+tail -n 3 ${cl_bn_data_dir}/lighthouse.bn.log
 echo
-tail -n 3 ${cl_vc_data_dir}/vc.log
+tail -n 3 ${cl_vc_data_dir}/lighthouse.vc.log
 
