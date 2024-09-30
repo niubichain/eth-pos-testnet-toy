@@ -26,7 +26,7 @@ mkdir -p $el_data_dir $cl_bn_data_dir $cl_vc_data_dir || exit 1
 cp ../static_files/jwt.hex ${jwt_path} || exit 1
 
 ${bin_dir}/reth init \
-    --chain=${chainspec_path} \
+    --chain=${genesis_json_path} \
     --datadir=${el_data_dir} \
     --log.file.directory=${el_data_dir}/logs \
     >> ${el_data_dir}/reth.log || exit 1
@@ -36,7 +36,7 @@ echo "**=============================================================**" \
 
 nohup ${bin_dir}/reth node \
     --datadir=${el_data_dir} \
-    --chain=${chainspec_path} \
+    --chain=${genesis_json_path} \
     --log.file.directory=${el_data_dir}/logs \
     --ipcdisable \
     --http --http.addr=0.0.0.0 \
