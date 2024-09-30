@@ -25,7 +25,8 @@ sleep 2
 mkdir -p $el_data_dir $cl_bn_data_dir $cl_vc_data_dir || exit 1
 cp ../static_files/jwt.hex ${jwt_path} || exit 1
 
-${bin_dir}/reth init --datadir=${el_data_dir} --chain=${genesis_json_path} || exit 1
+${bin_dir}/reth init --datadir=${el_data_dir} --chain=${genesis_json_path} \
+    >> ${el_data_dir}/reth.log || exit 1
 
 nohup ${bin_dir}/reth node \
     --datadir=${el_data_dir} \
@@ -61,7 +62,7 @@ nohup ${bin_dir}/lighthouse validator_client \
     --testnet-dir=${testnet_dir} \
     --datadir=${cl_vc_data_dir}\
     --init-slashing-protection \
-    --beacon-nodes="http://localhost:9000" \
+    --beacon-nodes="http://localhost:9001" \
     --suggested-fee-recipient=${fee_recipient} \
     >>${cl_vc_data_dir}/lighthouse.vc.log 2>&1 &
 

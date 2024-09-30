@@ -57,7 +57,7 @@ nohup ${bin_dir}/lighthouse validator_client \
     --testnet-dir=${testnet_dir} \
     --datadir=${cl_vc_data_dir}\
     --init-slashing-protection \
-    --beacon-nodes="http://localhost:9000" \
+    --beacon-nodes="http://localhost:9001" \
     --suggested-fee-recipient=${fee_recipient} \
     >>${cl_vc_data_dir}/lighthouse.vc.log 2>&1 &
 
