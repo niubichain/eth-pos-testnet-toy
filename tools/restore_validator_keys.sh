@@ -27,7 +27,7 @@ if [[ "" == $validator_cnt || "" == $mnemonics ]]; then
     exit 1
 fi
 
-echo "$mnemonics" > $txt_path | exit 1
+echo "$mnemonics" > $txt_path || exit 1
 
 time ../testdata/bin/lighthouse account validator recover \
     --testnet-dir=${cfg_dir} \
