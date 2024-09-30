@@ -9,7 +9,6 @@ utils:
 	mkdir -p testdata/bin
 	cd submodules/lighthouse && make && cp ./target/release/lighthouse ../../testdata/bin/
 	cd submodules/reth && make build && cp ./target/release/reth ../../testdata/bin/
-	cd submodules/go-ethereum && make geth && cp build/bin/geth ../../testdata/bin/
 
 genesis: utils
 	cd submodules/egg && make build
