@@ -41,6 +41,7 @@ nohup ${bin_dir}/lighthouse beacon_node \
     --testnet-dir=${testnet_dir} \
     --datadir=${cl_bn_data_dir} \
     --slots-per-restore-point=32 \
+    --boot-nodes= \
     --enable-private-discovery \
     --disable-enr-auto-update \
     --enr-udp-port=9000 --enr-tcp-port=9000 \
