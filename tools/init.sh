@@ -28,6 +28,9 @@ cp ../static_files/jwt.hex ${jwt_path} || exit 1
 ${bin_dir}/reth init --datadir=${el_data_dir} --chain=${genesis_json_path} \
     >> ${el_data_dir}/reth.log || exit 1
 
+echo "**=============================================================**" \
+    >> ${el_data_dir}/reth.log || exit 1
+
 nohup ${bin_dir}/reth node \
     --datadir=${el_data_dir} \
     --chain=${genesis_json_path} \
