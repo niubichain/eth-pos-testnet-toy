@@ -14,7 +14,7 @@ fi
 EXEC_PATH=$(echo ${EXEC_PATH} | sed 's@/\./@/@g' | sed 's@/\.*$@@')
 cd $EXEC_PATH || exit 1
 #################################################
-source ./path.env
+source ./common.env
 
 cfg_dir=${testnet_dir}
 yaml_path="${cfg_dir}/mnemonics.yaml"

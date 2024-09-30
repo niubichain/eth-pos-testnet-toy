@@ -14,12 +14,7 @@ fi
 EXEC_PATH=$(echo ${EXEC_PATH} | sed 's@/\./@/@g' | sed 's@/\.*$@@')
 cd $EXEC_PATH || exit 1
 #################################################
-source ./path.env
-
-fee_recipient="0x8943545177806ED17B9F23F0a21ee5948eCaa776"
-if [[ "" != $FEE_RECIPIENT ]]; then
-    fee_recipient=$FEE_RECIPIENT
-fi
+source ./common.env
 
 pkill lighthouse
 pkill reth
@@ -59,13 +54,14 @@ nohup ${bin_dir}/lighthouse beacon_node \
     --jwt-secrets=${jwt_path} \
     --subscribe-all-subnets \
     --suggested-fee-recipient=${fee_recipient} \
+    --allow-insecure-genesis-sync \
     >>${cl_bn_data_dir}/lighthouse.bn.log 2>&1 &
 
 nohup ${bin_dir}/lighthouse validator_client \
     --testnet-dir=${testnet_dir} \
     --datadir=${cl_vc_data_dir}\
     --init-slashing-protection \
-    --beacon-nodes="http://localhost:9001" \
+    --beacon-nodes="http://localhost:9000" \
     --suggested-fee-recipient=${fee_recipient} \
     >>${cl_vc_data_dir}/lighthouse.vc.log 2>&1 &
 
