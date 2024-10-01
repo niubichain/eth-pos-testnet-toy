@@ -28,7 +28,7 @@ cp ../static_files/jwt.hex ${jwt_path} || exit 1
 geth init \
     --datadir=${el_data_dir} \
     ${genesis_json_path} \
-    >> ${el_data_dir}/reth.log || exit 1
+    >> ${el_data_dir}/reth.log 2>&1 || exit 1
 
 # ${bin_dir}/reth init \
 #     --chain=${genesis_json_path} \
@@ -38,6 +38,8 @@ geth init \
 
 echo "**=============================================================**" \
     >> ${el_data_dir}/reth.log || exit 1
+
+      # --state.scheme=path \
 
 nohup geth \
       --networkid=9527 \
