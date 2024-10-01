@@ -16,11 +16,10 @@ cd $EXEC_PATH || exit 1
 #################################################
 source ./common.env
 
-pkill lighthouse
+pkill reth
 sleep 2
 
-pkill reth
-pkill geth
+pkill lighthouse
 sleep 2
 
 nohup ${bin_dir}/reth node \
