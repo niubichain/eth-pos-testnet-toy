@@ -16,7 +16,7 @@ genesis: utils
 	cp -r submodules/egg/data testdata/node/genesis_data
 	bash -x tools/restore_validator_keys.sh
 
-create_initial_node: genesis
+create_initial_node: stop_initial_node genesis
 	bash -x tools/init.sh
 
 start_initial_node:

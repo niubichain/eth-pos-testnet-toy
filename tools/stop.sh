@@ -29,3 +29,4 @@ tail -n 3 ${cl_bn_data_dir}/lighthouse.bn.log
 echo
 tail -n 3 ${cl_vc_data_dir}/lighthouse.vc.log
 
+exit 0
