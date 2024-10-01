@@ -51,25 +51,23 @@ nohup ${bin_dir}/reth node \
 nohup ${bin_dir}/lighthouse beacon_node \
     --testnet-dir=${testnet_dir} \
     --datadir=${cl_bn_data_dir} \
+    --staking \
     --slots-per-restore-point=32 \
     --boot-nodes= \
     --enable-private-discovery \
     --disable-enr-auto-update \
-    --enr-udp-port=9000 --enr-tcp-port=9000 \
-    --listen-address=0.0.0.0 --port=9000 \
-    --http --http-address=0.0.0.0 --http-port=4000 \
+    --listen-address=0.0.0.0 \
+    --http --http-address=0.0.0.0 \
     --execution-endpoints="http://localhost:8551" \
     --jwt-secrets=${jwt_path} \
     --subscribe-all-subnets \
     --suggested-fee-recipient=${fee_recipient} \
-    --allow-insecure-genesis-sync \
     >>${cl_bn_data_dir}/lighthouse.bn.log 2>&1 &
 
 nohup ${bin_dir}/lighthouse validator_client \
     --testnet-dir=${testnet_dir} \
     --datadir=${cl_vc_data_dir}\
     --init-slashing-protection \
-    --beacon-nodes="http://localhost:9001" \
     --suggested-fee-recipient=${fee_recipient} \
     >>${cl_vc_data_dir}/lighthouse.vc.log 2>&1 &
 
