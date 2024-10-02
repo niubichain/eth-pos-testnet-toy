@@ -34,7 +34,6 @@ nohup ${bin_dir}/reth node \
     --ws.origins=* --ws.api="eth,net" \
     --authrpc.addr=0.0.0.0 --authrpc.port=8551 \
     --authrpc.jwtsecret=${jwt_path} \
-    --disable-discovery \
     >>${el_data_dir}/reth.log 2>&1 &
 
 nohup ${bin_dir}/lighthouse beacon_node \
@@ -44,9 +43,7 @@ nohup ${bin_dir}/lighthouse beacon_node \
     --slots-per-restore-point=32 \
     --boot-nodes= \
     --enr-address=${cl_enr_address} \
-    --target-peers=1 \
-    --enable-private-discovery \
-    --disable-enr-auto-update \
+    --target-peers=3 \
     --listen-address=0.0.0.0 \
     --http --http-address=0.0.0.0 \
     --execution-endpoints="http://localhost:8551" \
