@@ -53,7 +53,8 @@ nohup ${bin_dir}/lighthouse beacon_node \
     --staking \
     --slots-per-restore-point=32 \
     --boot-nodes= \
-    --target-peers=0 \
+    --enr-address=${cl_enr_address} \
+    --target-peers=1 \
     --listen-address=0.0.0.0 \
     --http --http-address=0.0.0.0 \
     --execution-endpoints="http://localhost:8551" \

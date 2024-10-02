@@ -30,6 +30,7 @@ fi
 
 el_enode=$(curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' "http://${peer_ip}:8545" | jq '.result.enode' | sed 's/"//g' || exit 1)
 cl_enr=$(curl "http://${peer_ip}:5052/eth/v1/node/identity" | jq '.data.enr' | sed 's/"//g' || exit 1)
+cl_peer_id=$(curl "http://${peer_ip}:5052/eth/v1/node/identity" | jq '.data.peer_id' | sed 's/"//g' || exit 1)
 
 mkdir -p $el_data_dir $cl_bn_data_dir $cl_vc_data_dir || exit 1
 cp ../static_files/jwt.hex ${jwt_path} || exit 1
@@ -60,10 +61,12 @@ nohup lighthouse beacon_node \
     --jwt-secrets=${jwt_path} \
     --subscribe-all-subnets \
     --suggested-fee-recipient=${fee_recipient} \
+    --enr-address=${cl_enr_address} \
+    --target-peers=1 \
+    --trusted-peers=${cl_peer_id} \
     --boot-nodes=${cl_enr} \
     --checkpoint-sync-url="http://${peer_ip}:5052" \
     --disable-deposit-contract-sync \
-    --target-peers=1 \
     >>${cl_bn_data_dir}/lighthouse.bn.log 2>&1 &
 
 sleep 2
