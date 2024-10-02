@@ -17,6 +17,7 @@ cd $EXEC_PATH || exit 1
 source ./common.env
 
 pkill reth
+pkill geth
 sleep 2
 
 pkill lighthouse

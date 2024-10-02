@@ -18,6 +18,7 @@ source ./common.env
 
 pkill lighthouse
 pkill reth
+pkill geth
 
 sleep 2
 
