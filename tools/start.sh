@@ -43,6 +43,7 @@ nohup ${bin_dir}/lighthouse beacon_node \
     --staking \
     --slots-per-restore-point=32 \
     --boot-nodes= \
+    --target-peers=0 \
     --enable-private-discovery \
     --disable-enr-auto-update \
     --listen-address=0.0.0.0 \

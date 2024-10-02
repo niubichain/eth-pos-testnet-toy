@@ -5,8 +5,8 @@
 ### Generate the initial node
 
 ```shell
-# Only need to execute one time,
-# will trigger the `sudo` command.
+# Execute on demand when there are code changes,
+# this operation will trigger the `sudo` command.
 make prepare
 
 # Create genesis data for the new testnet,
