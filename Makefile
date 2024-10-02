@@ -3,14 +3,13 @@ all: create_initial_node
 prepare:
 	git submodule update --init --recursive
 	cd submodules/egg && make prepare
-	rm -rf testdata/bin
-	mkdir -p testdata/bin
+	rm -rf testdata/bin; mkdir -p testdata/bin
 	cd submodules/lighthouse && make && cp ./target/release/lighthouse ../../testdata/bin/
 	cd submodules/reth && make build && cp ./target/release/reth ../../testdata/bin/
 
 genesis:
 	cd submodules/egg && make build
-	mkdir -p testdata/node
+	rm -rf testdata/node; mkdir -p testdata/node
 	cp -r submodules/egg/data testdata/node/genesis_data
 	bash -x tools/restore_validator_keys.sh
 
