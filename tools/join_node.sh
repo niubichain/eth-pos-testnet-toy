@@ -16,13 +16,20 @@ cd $EXEC_PATH || exit 1
 #################################################
 source ./common.env
 
+pkill reth
+pkill geth
+sleep 2
+
+pkill lighthouse
+sleep 2
+
 peer_ip="60.212.189.153"
 if [[ "" != $NBNET_TESTNET_PEER_IP ]]; then
-	peer_ip=$NBNET_TESTNET_PEER_IP
+    peer_ip=$NBNET_TESTNET_PEER_IP
 fi
 
-el_enode=$(curl "http://${peer_ip}:5052/eth/v1/node/identity" | jq '.data.enr' || exit 1)
-cl_enr=$(curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' "http://${peer_ip}:8545" | jq '.result.enode' || exit 1)
+el_enode=$(curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' "http://${peer_ip}:8545" | jq '.result.enode' | sed 's/"//g' || exit 1)
+cl_enr=$(curl "http://${peer_ip}:5052/eth/v1/node/identity" | jq '.data.enr' | sed 's/"//g' || exit 1)
 
 mkdir -p $el_data_dir $cl_bn_data_dir $cl_vc_data_dir || exit 1
 cp ../static_files/jwt.hex ${jwt_path} || exit 1
@@ -38,8 +45,8 @@ nohup reth node \
     --ws.origins=* --ws.api="eth,net" \
     --authrpc.addr=0.0.0.0 --authrpc.port=8551 \
     --authrpc.jwtsecret=${jwt_path} \
-	--trusted-peers="${el_enode}" \
-	--bootnodes="${el_enode}" \
+    --trusted-peers=${el_enode} \
+    --bootnodes=${el_enode} \
     >>${el_data_dir}/reth.log 2>&1 &
 
 nohup lighthouse beacon_node \
@@ -47,14 +54,22 @@ nohup lighthouse beacon_node \
     --datadir=${cl_bn_data_dir} \
     --staking \
     --slots-per-restore-point=32 \
-    --enable-private-discovery \
-    --disable-enr-auto-update \
     --listen-address=0.0.0.0 \
     --http --http-address=0.0.0.0 \
     --execution-endpoints="http://localhost:8551" \
     --jwt-secrets=${jwt_path} \
     --subscribe-all-subnets \
     --suggested-fee-recipient=${fee_recipient} \
-    --boot-nodes="${cl_enr}" \
-	--checkpoint-sync-url="http://${peer_ip}:5052" \
+    --boot-nodes=${cl_enr} \
+    --checkpoint-sync-url="http://${peer_ip}:5052" \
+    --disable-deposit-contract-sync \
+    --target-peers=1 \
     >>${cl_bn_data_dir}/lighthouse.bn.log 2>&1 &
+
+sleep 2
+
+tail -n 3 ${el_data_dir}/reth.log
+echo
+tail -n 3 ${cl_bn_data_dir}/lighthouse.bn.log
+
+exit 0
