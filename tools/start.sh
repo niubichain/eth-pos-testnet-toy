@@ -42,7 +42,8 @@ nohup geth \
       --authrpc.addr=0.0.0.0 \
       --authrpc.vhosts=* \
       --authrpc.jwtsecret=${jwt_path} \
-      --syncmode=archive \
+      --syncmode=full \
+      --gcmode=archive \
     >>${el_data_dir}/reth.log 2>&1 &
 
 nohup ${bin_dir}/lighthouse beacon_node \
