@@ -23,17 +23,26 @@ sleep 2
 pkill lighthouse
 sleep 2
 
-nohup ${bin_dir}/reth node \
-    --datadir=${el_data_dir} \
-    --chain=${genesis_json_path} \
-    --log.file.directory=${el_data_dir}/logs \
-    --ipcdisable \
-    --http --http.addr=0.0.0.0 \
-    --http.corsdomain=* --http.api="admin,net,eth,web3,debug,trace,txpool" \
-    --ws --ws.addr=0.0.0.0 \
-    --ws.origins=* --ws.api="eth,net" \
-    --authrpc.addr=0.0.0.0 --authrpc.port=8551 \
-    --authrpc.jwtsecret=${jwt_path} \
+nohup geth \
+      --networkid=${chain_id} \
+      --datadir=${el_data_dir} \
+      --http \
+      --http.addr=0.0.0.0 \
+      --http.port=8545 \
+      --http.vhosts=* \
+      --http.corsdomain=* \
+      --http.api=admin,engine,net,eth,web3,debug,txpool \
+      --ws \
+      --ws.addr=0.0.0.0 \
+      --ws.port=8546 \
+      --ws.api=net,eth \
+      --ws.origins=* \
+      --allow-insecure-unlock \
+      --authrpc.port=8551 \
+      --authrpc.addr=0.0.0.0 \
+      --authrpc.vhosts=* \
+      --authrpc.jwtsecret=${jwt_path} \
+      --syncmode=archive \
     >>${el_data_dir}/reth.log 2>&1 &
 
 nohup ${bin_dir}/lighthouse beacon_node \

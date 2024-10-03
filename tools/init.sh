@@ -30,19 +30,11 @@ geth init \
     ${genesis_json_path} \
     >> ${el_data_dir}/reth.log 2>&1 || exit 1
 
-# ${bin_dir}/reth init \
-#     --chain=${genesis_json_path} \
-#     --datadir=${el_data_dir} \
-#     --log.file.directory=${el_data_dir}/logs \
-#     >> ${el_data_dir}/reth.log || exit 1
-
 echo "**=============================================================**" \
     >> ${el_data_dir}/reth.log || exit 1
 
-      # --state.scheme=path \
-
 nohup geth \
-      --networkid=9527 \
+      --networkid=${chain_id} \
       --datadir=${el_data_dir} \
       --http \
       --http.addr=0.0.0.0 \
@@ -62,20 +54,6 @@ nohup geth \
       --authrpc.jwtsecret=${jwt_path} \
       --syncmode=archive \
     >>${el_data_dir}/reth.log 2>&1 &
-
-# nohup ${bin_dir}/reth node \
-#     --datadir=${el_data_dir} \
-#     --chain=${genesis_json_path} \
-#     --log.file.directory=${el_data_dir}/logs \
-#     --ipcdisable \
-#     --http --http.addr=0.0.0.0 \
-#     --http.corsdomain=* --http.api="admin,net,eth,web3,debug,trace,txpool" \
-#     --ws --ws.addr=0.0.0.0 \
-#     --ws.origins=* --ws.api="eth,net" \
-#     --authrpc.addr=0.0.0.0 --authrpc.port=8551 \
-#     --authrpc.jwtsecret=${jwt_path} \
-#     --disable-discovery \
-#     >>${el_data_dir}/reth.log 2>&1 &
 
 nohup ${bin_dir}/lighthouse beacon_node \
     --testnet-dir=${testnet_dir} \
