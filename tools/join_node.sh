@@ -61,6 +61,7 @@ nohup lighthouse beacon_node \
     --jwt-secrets=${jwt_path} \
     --suggested-fee-recipient=${fee_recipient} \
     --enr-address=${cl_enr_address} \
+    --disable-enr-auto-update \
     --trusted-peers=${cl_peer_id} \
     --boot-nodes=${cl_enr} \
     --checkpoint-sync-url="http://${peer_ip}:5052" \
