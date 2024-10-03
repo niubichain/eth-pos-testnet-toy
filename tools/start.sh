@@ -26,6 +26,8 @@ sleep 2
 nohup geth \
       --networkid=${chain_id} \
       --datadir=${el_data_dir} \
+      --bootnodes= \
+      --nodiscover \
       --http \
       --http.addr=0.0.0.0 \
       --http.port=8545 \
