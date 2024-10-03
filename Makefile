@@ -6,6 +6,7 @@ prepare:
 	rm -rf testdata/bin; mkdir -p testdata/bin
 	cd submodules/lighthouse && make && cp ./target/release/lighthouse ../../testdata/bin/
 	cd submodules/reth && make build && cp ./target/release/reth ../../testdata/bin/
+	cd submodules/geth && make geth && cp build/bin/reth ../../testdata/bin/
 
 genesis:
 	cd submodules/egg && make build

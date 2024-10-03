@@ -7,3 +7,6 @@
 [submodule "submodules/egg"]
 	path = submodules/egg
 	url = https://github.com/NBnet/EGG.git
+[submodule "submodules/go-ethereum"]
+	path = submodules/go-ethereum
+	url = https://github.com/NBnet/go-ethereum.git
