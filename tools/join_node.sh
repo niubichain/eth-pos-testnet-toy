@@ -35,37 +35,43 @@ cl_peer_id=$(curl "http://${peer_ip}:5052/eth/v1/node/identity" | jq '.data.peer
 mkdir -p $el_data_dir $cl_bn_data_dir $cl_vc_data_dir || exit 1
 cp ../static_files/jwt.hex ${jwt_path} || exit 1
 
-nohup reth node \
+nohup geth \
+    --networkid=${chain_id} \
     --datadir=${el_data_dir} \
-    --chain=${genesis_json_path} \
-    --log.file.directory=${el_data_dir}/logs \
-    --ipcdisable \
-    --http --http.addr=0.0.0.0 \
-    --http.corsdomain=* --http.api="admin,net,eth,web3,debug,trace,txpool" \
-    --ws --ws.addr=0.0.0.0 \
-    --ws.origins=* --ws.api="eth,net" \
-    --authrpc.addr=0.0.0.0 --authrpc.port=8551 \
+    --bootnodes= \
+    --nodiscover \
+    --http --http.addr='0.0.0.0' --http.port=8545 --http.vhosts=* --http.corsdomain=* \
+    --http.api=admin,engine,net,eth,web3,debug,txpool \
+    --ws --ws.addr='0.0.0.0' --ws.port=8546 --ws.origins=* \
+    --ws.api=net,eth \
+    --allow-insecure-unlock \
+    --authrpc.addr='localhost' --authrpc.port=8551 \
     --authrpc.jwtsecret=${jwt_path} \
+    --syncmode=full \
+    --gcmode=archive \
     --trusted-peers=${el_enode} \
     --bootnodes=${el_enode} \
     >>${el_data_dir}/reth.log 2>&1 &
 
-nohup lighthouse beacon_node \
+nohup ${bin_dir}/lighthouse beacon_node \
     --testnet-dir=${testnet_dir} \
     --datadir=${cl_bn_data_dir} \
     --staking \
     --slots-per-restore-point=32 \
-    --listen-address=0.0.0.0 \
-    --http --http-address=0.0.0.0 \
+    --boot-nodes= \
+    --enr-address=${cl_enr_address} \
+    --disable-enr-auto-update \
+    --disable-upnp \
+    --listen-address='0.0.0.0' \
+    --port=9000 --discovery-port=9000 --quic-port=9001 \
+    --http --http-address='0.0.0.0' --http-port=5052 --http-allow-origin='*' \
+    --metrics --metrics-address='0.0.0.0' --metrics-port=5054 --metrics-allow-origin='*' \
     --execution-endpoints="http://localhost:8551" \
     --jwt-secrets=${jwt_path} \
     --suggested-fee-recipient=${fee_recipient} \
-    --enr-address=${cl_enr_address} \
-    --disable-enr-auto-update \
-    --trusted-peers=${cl_peer_id} \
     --boot-nodes=${cl_enr} \
+    --trusted-peers=${cl_peer_id} \
     --checkpoint-sync-url="http://${peer_ip}:5052" \
-    --disable-deposit-contract-sync \
     >>${cl_bn_data_dir}/lighthouse.bn.log 2>&1 &
 
 sleep 2
