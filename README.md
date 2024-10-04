@@ -1,7 +1,8 @@
 # NBnet-Testnet
 
-> **NOTE: can only run on recent versions of `Ubuntu/Debian/Fedora Linux` by default.**
-> For building on non-standard OS platforms, check [**github.com/NBnet/EGG**](https://github.com/NBnet/EGG/blob/master/README.md).
+> **NOTE:**    
+> Can only run on recent versions of `Ubuntu/Debian/Fedora Linux` by default.    
+> For building on non-standard OS platforms, check [**github.com/NBnet/EGG**](https://github.com/NBnet/EGG/blob/master/README.md#build-on-custom-os-platforms).
 
 ### Generate the initial node
 
