@@ -1,12 +1,18 @@
 # NBnet-Testnet
 
-> **NOTE: can only run on recent versions of `Ubuntu/Debian/Fedora Linux`.**
+> **NOTE: can only run on recent versions of `Ubuntu/Debian/Fedora Linux` by default.**
+> For building on non-standard OS platforms, check [**github.com/NBnet/EGG**](https://github.com/NBnet/EGG/blob/master/README.md).
 
 ### Generate the initial node
 
 ```shell
 # Execute on demand when there are code changes,
 # this operation will trigger the `sudo` command.
+#
+# For building on your custom OS platforms,
+# you should install all dependencies manually,
+# and then use `make minimal_prepare` instead.
+#
 make prepare
 
 # Create genesis data for the new testnet,

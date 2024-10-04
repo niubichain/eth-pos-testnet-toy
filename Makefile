@@ -1,12 +1,17 @@
 all: create_initial_node
 
-prepare:
+prepare_bin:
 	git submodule update --init --recursive
-	cd submodules/egg && make prepare
 	rm -rf testdata/bin; mkdir -p testdata/bin
 	cd submodules/lighthouse && make && cp ./target/release/lighthouse ../../testdata/bin/
 	cd submodules/reth && make build && cp ./target/release/reth ../../testdata/bin/
-	cd submodules/geth && make geth && cp build/bin/reth ../../testdata/bin/
+	cd submodules/geth && make geth && cp build/bin/geth ../../testdata/bin/
+
+prepare: prepare_bin
+	cd submodules/egg && make prepare
+
+minimal_prepare: prepare_bin
+	cd submodules/egg && make minimal_prepare
 
 genesis:
 	cd submodules/egg && make build
