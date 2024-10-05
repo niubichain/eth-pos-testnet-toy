@@ -23,10 +23,7 @@ sleep 2
 pkill lighthouse
 sleep 2
 
-peer_ip="60.212.189.153"
-if [[ "" != $NBNET_TESTNET_PEER_IP ]]; then
-    peer_ip=$NBNET_TESTNET_PEER_IP
-fi
+peer_ip=$NBNET_PEER_IP
 
 el_enode=$(curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' "http://${peer_ip}:8545" | jq '.result.enode' | sed 's/"//g' || exit 1)
 cl_enr=$(curl "http://${peer_ip}:5052/eth/v1/node/identity" | jq '.data.enr' | sed 's/"//g' || exit 1)
@@ -35,16 +32,16 @@ cl_peer_id=$(curl "http://${peer_ip}:5052/eth/v1/node/identity" | jq '.data.peer
 mkdir -p $el_data_dir $cl_bn_data_dir $cl_vc_data_dir || exit 1
 cp ../static_files/jwt.hex ${jwt_path} || exit 1
 
-nohup geth \
+nohup ${bin_dir}/geth \
     --networkid=${chain_id} \
     --datadir=${el_data_dir} \
     --bootnodes= \
-    --nodiscover \
+    --nat=extip:${external_ip} \
+    --discovery.port 30303 \
     --http --http.addr='0.0.0.0' --http.port=8545 --http.vhosts=* --http.corsdomain=* \
-    --http.api=admin,engine,net,eth,web3,debug,txpool \
+    --http.api='admin,debug,eth,net,trace,txpool,web3,rpc,reth,ots' \
     --ws --ws.addr='0.0.0.0' --ws.port=8546 --ws.origins=* \
-    --ws.api=net,eth \
-    --allow-insecure-unlock \
+    --ws.api='net,eth' \
     --authrpc.addr='localhost' --authrpc.port=8551 \
     --authrpc.jwtsecret=${jwt_path} \
     --syncmode=full \
@@ -59,7 +56,7 @@ nohup ${bin_dir}/lighthouse beacon_node \
     --staking \
     --slots-per-restore-point=32 \
     --boot-nodes= \
-    --enr-address=${cl_enr_address} \
+    --enr-address=${external_ip} \
     --disable-enr-auto-update \
     --disable-upnp \
     --listen-address='0.0.0.0' \

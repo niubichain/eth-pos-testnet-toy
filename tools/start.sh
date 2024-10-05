@@ -23,21 +23,46 @@ sleep 2
 pkill lighthouse
 sleep 2
 
-nohup geth \
+# remove the `--gcmode=archive` for a full node
+#
+# --metrics
+# --metrics.port 6060
+# --discovery.v5
+nohup ${bin_dir}/geth \
     --networkid=${chain_id} \
     --datadir=${el_data_dir} \
     --bootnodes= \
-    --nodiscover \
+    --nat=extip:${external_ip} \
+    --discovery.port 30303 \
     --http --http.addr='0.0.0.0' --http.port=8545 --http.vhosts=* --http.corsdomain=* \
-    --http.api=admin,engine,net,eth,web3,debug,txpool \
+    --http.api='admin,debug,eth,net,trace,txpool,web3,rpc,reth,ots' \
     --ws --ws.addr='0.0.0.0' --ws.port=8546 --ws.origins=* \
-    --ws.api=net,eth \
-    --allow-insecure-unlock \
+    --ws.api='net,eth' \
     --authrpc.addr='localhost' --authrpc.port=8551 \
     --authrpc.jwtsecret=${jwt_path} \
     --syncmode=full \
     --gcmode=archive \
     >>${el_data_dir}/reth.log 2>&1 &
+
+# # add the `--full` for a fullnode
+# #
+# # --enable-discv5-discovery
+# # --discovery.v5.port 9200
+# #
+# nohup ${bin_dir}/reth node \
+#     --chain=${genesis_json_path} \
+#     --datadir=${el_data_dir} \
+#     --log.file.directory=${el_data_dir}/logs \
+#     --ipcdisable \
+#     --nat=extip:${external_ip} \
+#     --discovery.port 30303 \
+#     --http --http.addr='0.0.0.0' --http.port=8545 --http.corsdomain=* \
+#     --http.api='admin,debug,eth,net,trace,txpool,web3,rpc,reth,ots' \
+#     --ws --ws.addr='0.0.0.0' --ws.port=8546 --ws.origins=* \
+#     --ws.api='eth,net' \
+#     --authrpc.addr='localhost' --authrpc.port=8551 \
+#     --authrpc.jwtsecret=${jwt_path} \
+#     >>${el_data_dir}/reth.log 2>&1 &
 
 nohup ${bin_dir}/lighthouse beacon_node \
     --testnet-dir=${testnet_dir} \
@@ -45,7 +70,7 @@ nohup ${bin_dir}/lighthouse beacon_node \
     --staking \
     --slots-per-restore-point=32 \
     --boot-nodes= \
-    --enr-address=${cl_enr_address} \
+    --enr-address=${external_ip} \
     --disable-enr-auto-update \
     --disable-upnp \
     --listen-address='0.0.0.0' \
