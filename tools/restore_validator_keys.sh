@@ -16,23 +16,28 @@ cd $EXEC_PATH || exit 1
 #################################################
 source ./common.env
 
-cfg_dir=${testnet_dir}
-yaml_path="${cfg_dir}/mnemonics.yaml"
-txt_path="${cfg_dir}/mnemonics.txt"
+NUMBER_OF_VALIDATORS="64"
+EL_AND_CL_MNEMONIC="giant issue aisle success illegal bike spike question tent bar rely arctic volcano long crawl hungry vocal artwork sniff fantasy very lucky have athlete"
 
-validator_cnt=$(grep -Po '(?<=count: )\d+' $yaml_path)
-mnemonics=$(grep -Po '(?<=mnemonic: ")[\s\w]+(?=")' $yaml_path)
+cfg_dir="../cfg_files"
+cfg_path="${cfg_dir}/custom.env"
+vc_dir="${cfg_dir}/__tmp__vcdata"
+
+rm -rf ${vc_dir}
+mkdir ${vc_dir} || exit 1
+
+validator_cnt=$(grep -Po '(?<=NUMBER_OF_VALIDATORS=")\d+' $cfg_path)
+mnemonics=$(grep -Po '(?<=EL_AND_CL_MNEMONIC=")[\s\w]+(?=")' $cfg_path)
 
 if [[ "" == $validator_cnt || "" == $mnemonics ]]; then
     exit 1
 fi
 
-echo "$mnemonics" > $txt_path || exit 1
-
-time ../testdata/bin/lighthouse account validator recover \
-    --testnet-dir=${cfg_dir} \
-    --datadir=${cl_vc_data_dir} \
-    --mnemonic-path=${txt_path} \
+# --testnet-dir=${testnet_dir} \
+echo ${mnemonics} | ../testdata/bin/lighthouse \
+    account validator recover \
+    --stdin-inputs \
+    --datadir=${vc_dir} \
     --count=${validator_cnt} \
     --store-withdrawal-keystore
 

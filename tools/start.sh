@@ -31,18 +31,19 @@ sleep 2
 nohup ${bin_dir}/geth \
     --networkid=${chain_id} \
     --datadir=${el_data_dir} \
+    --state.scheme='hash' \
     --bootnodes= \
     --nat=extip:${external_ip} \
     --discovery.port 30303 \
-    --http --http.addr='0.0.0.0' --http.port=8545 --http.vhosts=* --http.corsdomain=* \
-    --http.api='admin,debug,eth,net,trace,txpool,web3,rpc,reth,ots' \
-    --ws --ws.addr='0.0.0.0' --ws.port=8546 --ws.origins=* \
+    --http --http.addr='0.0.0.0' --http.port=8545 --http.vhosts='*' --http.corsdomain='*' \
+    --http.api='admin,debug,eth,net,txpool,web3,rpc' \
+    --ws --ws.addr='0.0.0.0' --ws.port=8546 --ws.origins='*' \
     --ws.api='net,eth' \
     --authrpc.addr='localhost' --authrpc.port=8551 \
     --authrpc.jwtsecret=${jwt_path} \
     --syncmode=full \
     --gcmode=archive \
-    >>${el_data_dir}/reth.log 2>&1 &
+    >>${el_data_dir}/geth_reth.log 2>&1 &
 
 # # add the `--full` for a fullnode
 # #
@@ -56,13 +57,13 @@ nohup ${bin_dir}/geth \
 #     --ipcdisable \
 #     --nat=extip:${external_ip} \
 #     --discovery.port 30303 \
-#     --http --http.addr='0.0.0.0' --http.port=8545 --http.corsdomain=* \
-#     --http.api='admin,debug,eth,net,trace,txpool,web3,rpc,reth,ots' \
-#     --ws --ws.addr='0.0.0.0' --ws.port=8546 --ws.origins=* \
+#     --http --http.addr='0.0.0.0' --http.port=8545 --http.corsdomain='*' \
+#     --http.api='admin,debug,eth,net,txpool,web3,rpc' \
+#     --ws --ws.addr='0.0.0.0' --ws.port=8546 --ws.origins='*' \
 #     --ws.api='eth,net' \
 #     --authrpc.addr='localhost' --authrpc.port=8551 \
 #     --authrpc.jwtsecret=${jwt_path} \
-#     >>${el_data_dir}/reth.log 2>&1 &
+#     >>${el_data_dir}/geth_reth.log 2>&1 &
 
 nohup ${bin_dir}/lighthouse beacon_node \
     --testnet-dir=${testnet_dir} \
@@ -95,7 +96,7 @@ nohup ${bin_dir}/lighthouse validator_client \
 
 sleep 2
 
-tail -n 3 ${el_data_dir}/reth.log
+tail -n 3 ${el_data_dir}/geth_reth.log
 echo
 tail -n 3 ${cl_bn_data_dir}/lighthouse.bn.log
 echo

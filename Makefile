@@ -1,7 +1,9 @@
 all: create_initial_node
 
-prepare_bin:
+prepare_code:
 	git submodule update --init --recursive
+
+prepare_bin: prepare_code
 	rm -rf testdata/bin; mkdir -p testdata/bin
 	cd submodules/lighthouse && make && cp ./target/release/lighthouse ../../testdata/bin/
 	cd submodules/reth && make build && cp ./target/release/reth ../../testdata/bin/
@@ -13,11 +15,15 @@ prepare: prepare_bin
 minimal_prepare: prepare_bin
 	cd submodules/egg && make minimal_prepare
 
-genesis:
-	cd submodules/egg && make build
-	rm -rf testdata/node; mkdir -p testdata/node
-	cp -r submodules/egg/data testdata/node/genesis_data
+restore_initial_validators: minimal_prepare
 	bash -x tools/restore_validator_keys.sh
+	rm -rf testdata/node; mkdir -p testdata/node/cl/vc
+	mv cfg_files/__tmp__vcdata/* testdata/node/cl/vc/
+
+genesis: prepare_code restore_initial_validators
+	cp cfg_files/custom.env submodules/egg/
+	cd submodules/egg && make build
+	cp -r submodules/egg/data testdata/node/genesis_data
 
 create_initial_node: stop_initial_node genesis
 	bash -x tools/init.sh
